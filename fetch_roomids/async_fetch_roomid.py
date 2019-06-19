@@ -42,7 +42,6 @@ async def save_one(chuncks):
     print(f'一共{len(list_rooms)}个房间')
     
     dict_title = {'roomid': list_rooms}
-
     with open(
             f'{DIRECTORY_ROOMID_UID}/roomid_uid{chuncks[0][0]}-{chuncks[-1][-1]}({len(list_rooms)}).toml',
             'w', encoding="utf-8") as f:
@@ -83,10 +82,11 @@ async def save_all():
         print(f'一共{len_list_input}数据,分片情况为{len(chuncks)}份，最后一份为{len(last_piece)}')
         assert not len_list_input - (len(chuncks) - 1) * LEN_CHUNCK - len(last_piece)
         await save_one(chuncks)
-
+        
+if not os.path.isdir(DIRECTORY_ROOMID_UID):
+    os.makedirs(DIRECTORY_ROOMID_UID)
 if sys.platform == 'win32':
     loop = asyncio.ProactorEventLoop()
     asyncio.set_event_loop(loop)
-
 loop = asyncio.get_event_loop()
 loop.run_until_complete(save_all())

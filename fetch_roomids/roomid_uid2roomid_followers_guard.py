@@ -76,7 +76,8 @@ async def save_all():
         assert not len_list_input - (len(chuncks) - 1) * LEN_CHUNCK - len(last_piece)
         await save_one(os.path.basename(file_url), chuncks)
 
-
+if not os.path.isdir(DIRECTORY_ROOMID_FOLLOWERS_GUARD):
+    os.makedirs(DIRECTORY_ROOMID_FOLLOWERS_GUARD)
 if sys.platform == 'win32':
     loop = asyncio.ProactorEventLoop()
     asyncio.set_event_loop(loop)

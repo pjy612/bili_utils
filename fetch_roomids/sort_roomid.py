@@ -39,5 +39,6 @@ def sort_all():
     with open(f'{DIRECTORY_SORTED}/sorted_{len(list_roomid_followers_guard)}.toml', 'w', encoding="utf-8") as f:
         toml.dump(dict_title, f)
 
-
+if not os.path.isdir(DIRECTORY_SORTED):
+    os.makedirs(DIRECTORY_SORTED)
 sort_all()
