@@ -13,7 +13,7 @@ from static_rooms import var_static_room_checker
 
 
 loop = asyncio.get_event_loop()
-distributed_clients = ['http://127.0.0.1:9001',]  # eg: ['http://127.0.0.1:8003',]
+distributed_clients = ['http://172.16.235.82:9001','http://172.16.235.81:9001']  # eg: ['http://127.0.0.1:8003',] ,'http://27.159.82.209:9001'
 
 
 class WebServer:
