@@ -9,7 +9,7 @@ sem = asyncio.Semaphore(2)
 
 class WebSession:
     def __init__(self):
-        self.var_session = aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=4))
+        self.var_session = aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=4),connector=aiohttp.TCPConnector(verify_ssl=False))
 
     @staticmethod
     async def __get_json_body(rsp):

@@ -7,7 +7,7 @@ import aiohttp
 class WebHub:
     
     def __init__(self):
-        self.var_session = aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=3))
+        self.var_session = aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=3),connector=aiohttp.TCPConnector(verify_ssl=False))
 
     @staticmethod
     async def __get_json_body(rsp):
