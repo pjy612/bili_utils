@@ -63,7 +63,7 @@ class WebHub:
 
     async def fetch_guard_num(self, uid) -> int:
         while True:
-            url = f'https://api.live.bilibili.com/guard/topList?ruid={uid}'
+            url = f'https://api.live.bilibili.com/guard/topList?ruid={uid}&page=1'
             json_rsp = await self.request_json('GET', url)
             if not json_rsp['code'] and 'info' in json_rsp['data']:
                 info = json_rsp['data']['info']
