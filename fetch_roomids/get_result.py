@@ -18,6 +18,10 @@ with open(file_urls[0], encoding="utf-8") as f:
     dic_roomid = toml.load(f)
 roomids = dic_roomid['roomid']
 roomids = [roomid for roomid, _, _ in roomids]
-dict_title = {'roomid': roomids}
+newroomids = []
+for id in roomids:
+    if id not in newroomids:
+        newroomids.append(id)
+dict_title = {'roomid': newroomids}
 with open(f'{DIRECTORY_SORTED}/roomid.toml', 'w', encoding="utf-8") as f:
     toml.dump(dict_title, f)
