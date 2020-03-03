@@ -29,6 +29,11 @@ class UtilsReq:
         return json_rsp
 
     @staticmethod
+    async def fetch_poster_rooms():
+        json_rsp = await var_session.request_json('GET', f'http://49.235.200.131:5001/room/v1/Room/all')
+        return json_rsp
+
+    @staticmethod
     async def fetch_rooms_from_bili(url, page_id):
         json_rsp = await var_session.request_json('GET', f'{url}{page_id}')
         return json_rsp

@@ -93,6 +93,12 @@ class UtilsTask:
         return unique_rooms
 
     @staticmethod
+    async def fetch_poster_rooms():
+        json_rsp = await UtilsReq.fetch_poster_rooms()
+        rooms = json_rsp['data']
+        return rooms
+        
+    @staticmethod
     async def fetch_rooms_from_rank(url, pages_num):
         print(url, pages_num)
         rooms = []

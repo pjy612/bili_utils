@@ -18,11 +18,13 @@ class DanmuRoom:
     GUARD_DELAY = 3600 * 24 * 15
     TV_DELAY = 3600 * 24 * 7
     STORM_DELAY = 3600 * 24 * 15
+    PK_DELAY = 3600 * 24 * 7
 
     real_roomid = attr.ib(validator=attr.validators.instance_of(int))
     latest_guard_time = attr.ib(default=0, validator=attr.validators.instance_of(int))
     latest_tv_time = attr.ib(default=0, validator=attr.validators.instance_of(int))
     latest_storm_time = attr.ib(default=0, validator=attr.validators.instance_of(int))
+    latest_pk_time = attr.ib(default=0, validator=attr.validators.instance_of(int))
 
     @property
     def weight(self) -> int:
@@ -33,7 +35,9 @@ class DanmuRoom:
         if self.latest_tv_time + self.TV_DELAY > curr_time:
             weight += 1
         if self.latest_storm_time + self.STORM_DELAY > curr_time:
-            weight += 2
+            weight += 3
+        if self.latest_pk_time + self.PK_DELAY > curr_time:
+            weight += 1
         return weight
 
     def update(self, raffle_type: str):
@@ -43,6 +47,8 @@ class DanmuRoom:
             self.latest_tv_time = utils.curr_time()
         if raffle_type == 'STORM':
             self.latest_storm_time = utils.curr_time()
+        if raffle_type == 'PK':
+            self.latest_pk_time = utils.curr_time()
 
 
 class DanmuRoomChecker(Refresher):
@@ -68,7 +74,7 @@ class DanmuRoomChecker(Refresher):
     async def refresh(self):
         rooms = [real_roomid for real_roomid in self.dict_danmu_rooms.keys()]
         rooms.sort(key=lambda real_roomid: self.dict_danmu_rooms[real_roomid].weight, reverse=True)
-        rooms = rooms[:1500]  # 防止过多
+        rooms = rooms[:5000]  # 防止过多
         assert len(rooms) == len(set(rooms))
 
         self.dict_danmu_rooms = {real_roomid: self.dict_danmu_rooms[real_roomid] for real_roomid in rooms}
