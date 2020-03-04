@@ -14,6 +14,10 @@ class StaticRoomChecker(Refresher):
         assert len(self.rooms) == len(set(self.rooms))
 
     async def refresh(self) -> list:
+        with open('conf/roomid.toml', encoding="utf-8") as f:
+            dic_roomid = toml.load(f)
+        self.rooms = [int(i) for i in dic_roomid['roomid']]
+        assert len(self.rooms) == len(set(self.rooms))
         return self.rooms
 
     def status(self) -> dict:
