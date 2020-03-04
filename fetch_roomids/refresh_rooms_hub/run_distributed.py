@@ -37,6 +37,7 @@ class OnlineRoomNotStaticCheckers:  # 在线房间，剔除静态的结果
         self.static_rooms = var_static_room_checker.rooms
 
     async def refresh_and_get_rooms(self):
+        self.static_rooms = var_static_room_checker.refresh()
         rooms = await self.online_room_checker.get_rooms()
         return [i for i in rooms if i not in self.static_rooms]  # 过滤掉静态房间里面的
 
