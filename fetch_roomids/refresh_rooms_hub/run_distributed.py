@@ -9,6 +9,7 @@ import utils
 from tasks.utils import UtilsTask
 from static_rooms import var_static_room_checker
 from online_rooms import var_online_room_checker
+from poster_rooms import var_poster_room_checker
 from printer import info as print
 
 
@@ -37,9 +38,11 @@ class OnlineRoomNotStaticCheckers:  # 在线房间，剔除静态的结果
         self.static_rooms = var_static_room_checker.rooms
 
     async def refresh_and_get_rooms(self):
-        self.static_rooms = var_static_room_checker.refresh()
+        self.static_rooms = await var_static_room_checker.refresh()
+        self.poster_rooms = await var_poster_room_checker.refresh()
+        static_rooms = list(set(self.static_rooms+self.poster_rooms))
         rooms = await self.online_room_checker.get_rooms()
-        return [i for i in rooms if i not in self.static_rooms]  # 过滤掉静态房间里面的
+        return [i for i in rooms if i not in static_rooms]  # 过滤掉静态房间里面的
 
     def status(self) -> dict:
         return self.online_room_checker.status()

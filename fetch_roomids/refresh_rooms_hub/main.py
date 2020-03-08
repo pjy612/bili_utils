@@ -16,6 +16,7 @@ loop = asyncio.get_event_loop()
 class RoomCheckers:
     def __init__(self):
         self.checkers = [var_static_room_checker, var_poster_room_checker, var_danmu_rooms_checker, var_rank_room_checker]
+        #self.checkers = [var_static_room_checker, var_danmu_rooms_checker, var_rank_room_checker]
 
     async def refresh_and_get_rooms(self):
         rooms = []

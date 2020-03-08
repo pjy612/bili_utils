@@ -30,7 +30,7 @@ class UtilsReq:
 
     @staticmethod
     async def fetch_poster_rooms():
-        json_rsp = await var_session.request_json('GET', f'http://49.235.200.131:5001/room/v1/Room/all')
+        json_rsp = await var_session.request_json('GET', f'http://49.235.200.131:5001/room/v1/Room/sort/all')
         return json_rsp
 
     @staticmethod
