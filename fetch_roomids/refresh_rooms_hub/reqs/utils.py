@@ -40,10 +40,10 @@ class UtilsReq:
 
     @staticmethod
     async def add_new_roomids(client, data):
-        json_rsp = await var_session.request_json('POST', f'{client}/add_new_roomids', json=data)
+        json_rsp = await var_session.request_json_once('POST', f'{client}/add_new_roomids', json=data)
         return json_rsp
 
     @staticmethod
     async def check_client(client):
-        json_rsp = await var_session.request_json('GET', f'{client}/check')
+        json_rsp = await var_session.request_json_once('GET', f'{client}/check')
         return json_rsp

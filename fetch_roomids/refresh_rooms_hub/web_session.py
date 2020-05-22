@@ -48,6 +48,23 @@ class WebSession:
                     # print('当前网络不好，正在重试，请反馈开发者!!!!')
                     print(sys.exc_info()[0], sys.exc_info()[1], url)
                 await asyncio.sleep(0.02)
+                
+    
+    # method 类似于aiohttp里面的对应method，目前只支持GET、POST
+    # is_login后期移除，json这里应该与expected_code协同
+    async def request_json_once(self,
+                           method,
+                           url,
+                           ctrl: Ctrl = ZERO_ONLY_CTRL,
+                           **kwargs) -> dict:
+        try:
+            async with self.var_session.request(method, url, **kwargs) as rsp:
+                if rsp.status == 200:
+                    return await self.__get_json_body(rsp)
+                return None
+        except:
+            # print('当前网络不好，正在重试，请反馈开发者!!!!')
+            print(sys.exc_info()[0], sys.exc_info()[1], url)
 
 
 async def exec_as_coroutine(func, *args):

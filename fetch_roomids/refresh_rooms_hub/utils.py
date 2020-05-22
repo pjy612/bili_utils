@@ -1,10 +1,10 @@
 import rsa
 import base64
-from time import time
+from time import time, sleep
 from datetime import datetime
 
 import toml
-
+import requests
 
 def curr_time():
     return int(time())
@@ -42,3 +42,26 @@ def make_signature(name: str, privkey: rsa.PrivateKey, need_name=True) -> dict:
 def read_toml(file_path):
     with open(file_path, encoding="utf-8") as f:
         return toml.load(f)
+
+def request_json(method, url, timeout=3, **kwargs):
+    while True:
+        try:
+            with requests.request(method, url, timeout=timeout, **kwargs) as rsp:
+                if rsp.status_code == 200:
+                    return rsp.json()
+                print(rsp.status_code)
+                return {'code': 404}
+        except Exception as e:
+            print(e)
+            sleep(0.5)
+            
+def request_json_once(method, url, timeout=3, **kwargs):
+    try:
+        with requests.request(method, url, timeout=timeout, **kwargs) as rsp:
+            if rsp.status_code == 200:
+                return rsp.json()
+            print(rsp.status_code)
+            return {'code': 404}
+    except Exception as e:
+        print(e)
+        return None

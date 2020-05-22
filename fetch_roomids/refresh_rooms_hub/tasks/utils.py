@@ -143,9 +143,13 @@ class UtilsTask:
             'verification': dict_signature
         }
         json_rsp = await UtilsReq.add_new_roomids(client, data)
-        return json_rsp['data']['sleep_time']
+        if json_rsp:
+            return json_rsp['data']['sleep_time']
+        return 0
 
     @staticmethod
     async def check_client(client):
         json_rsp = await UtilsReq.check_client(client)
-        return json_rsp['data']
+        if json_rsp:
+            return json_rsp['data']
+        return None

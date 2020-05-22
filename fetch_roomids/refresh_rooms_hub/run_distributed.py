@@ -23,8 +23,9 @@ async def check_max_rooms_num():
     sum_num = 0
     for client in distributed_clients:
         data = await UtilsTask.check_client(client)
-        sum_num += data['remain_roomids'] + len(data['roomids_monitored'])
-    return sum_num - 1000
+        if data:
+            sum_num += data['remain_roomids'] + len(data['roomids_monitored'])
+    return sum_num
 
 max_rooms_num = loop.run_until_complete(check_max_rooms_num())
 assert max_rooms_num > 0
@@ -96,14 +97,25 @@ class WebServer:
     async def push_roomids(self) -> float:  # 休眠时间
         print('正在准备推送房间')
         shuffle(distributed_clients)
-        print(f'有效房间 {len(self.rooms)}')
+        print(f'有效房间 {len(self.rooms)}')        
+        online_rooms = []
+        if self.rooms:
+            all_rooms = utils.request_json('GET',f'http://49.235.200.131:5001/room/v1/Room/room/all')['data']
+            if all_rooms:
+                online_rooms = list(set(self.rooms).difference(set(all_rooms)))
+            if online_rooms:
+                rsp = utils.request_json_once('POST',f'http://49.235.200.131:5001/room/v1/Room/room_init_list',json=online_rooms)
+                print(len(online_rooms),rsp)
 
         roomids_monitored = []  # 所有的正在监控的房间
         remain_roomids = []  # 每个 client 的空余量
         for client in distributed_clients:
             data = await UtilsTask.check_client(client)
-            remain_roomids.append(data['remain_roomids'])
-            roomids_monitored += data['roomids_monitored']
+            if data:
+                remain_roomids.append(data['remain_roomids'])
+                roomids_monitored += data['roomids_monitored']
+            else:
+                remain_roomids.append(0)
 
         new_roomids = list(set(self.rooms) - set(roomids_monitored))
 

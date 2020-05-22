@@ -20,11 +20,14 @@ class OnlineRoomChecker(Refresher):
 
     def reset_max_rooms_num(self, num: int, url_index: int):  # 大约的数据
         base_url = 'http://api.live.bilibili.com'
-        url0_page_size = max(200, int(num/50))
+
+        #url0_page_size = max(200, int(num/50))
+        url0_page_size = 1000
         url0_pages_num = int(num / url0_page_size)
 
         url1_page_size = 100
         url1_pages_num = int(num/100)
+        
         urls = [
             (
                 f'{base_url}/room/v1/Area/getListByAreaID?areaId=0&sort=online&pageSize={url0_page_size}&page=',
