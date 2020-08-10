@@ -22,7 +22,7 @@ class OnlineRoomChecker(Refresher):
         base_url = 'http://api.live.bilibili.com'
 
         #url0_page_size = max(200, int(num/50))
-        url0_page_size = 1000
+        url0_page_size = 200
         url0_pages_num = int(num / url0_page_size)
 
         url1_page_size = 100

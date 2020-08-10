@@ -20,12 +20,13 @@ url_index = ctrl['url_index']
 
 
 async def check_max_rooms_num():
-    sum_num = 0
-    for client in distributed_clients:
-        data = await UtilsTask.check_client(client)
-        if data:
-            sum_num += data['remain_roomids'] + len(data['roomids_monitored'])
-    return sum_num
+    #sum_num = 0
+    #for client in distributed_clients:
+    #    data = await UtilsTask.check_client(client)
+    #    if data:
+    #        sum_num += data['remain_roomids'] + len(data['roomids_monitored'])
+    #return sum_num
+    return 100000
 
 max_rooms_num = loop.run_until_complete(check_max_rooms_num())
 assert max_rooms_num > 0
@@ -97,7 +98,7 @@ class WebServer:
     async def push_roomids(self) -> float:  # 休眠时间
         print('正在准备推送房间')
         shuffle(distributed_clients)
-        print(f'有效房间 {len(self.rooms)}')        
+        print(f'有效房间 {len(self.rooms)}')
         online_rooms = []
         if self.rooms:
             all_rooms = utils.request_json('GET',f'http://49.235.200.131:5001/room/v1/Room/room/all')['data']
@@ -118,7 +119,7 @@ class WebServer:
                 remain_roomids.append(0)
 
         new_roomids = list(set(self.rooms) - set(roomids_monitored))
-
+        print(f'需要监控得房间 {len(new_roomids)}')
         if new_roomids:
             sleep_time = 0
             cursor = 0
